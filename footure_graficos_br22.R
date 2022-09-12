@@ -3,7 +3,7 @@ library(ggrepel) #biblioteca para reduzir sobreposição de pontos
 library(reshape2) #biblioteca para pivotar tabelas (função melted)
 library(ggpubr) #adiciona mais possibilidades às customizações do ggplot2
 
-# Primeiro, carregar o script "wyscout_times_br22.R" até a linha 92
+# Primeiro, carregar o script "footure_times_br22.R" até a linha 92
 # O ideal é construir um objeto específico para o gráfico, ao invés de se referir ao banco completo.
 
 ### SCATTERPLOT - COMPARATIVO PERIGO CRIADO X PERIGO CONVERTIDO
@@ -271,9 +271,9 @@ stacked_dados <- stacked_dados %>% select(Time, Posse, Ataque, Defesa, Eficienci
 # Função para pivotar o data frame, necessário para atender aos atributos do gráfico de barras agrupadas
 stacked_melted <- melt(stacked_dados)
 
-# Plotagem do gráfico
+# Plotagem do gráfico - COLUNAS AGRUPADAS
 
-ggplot(stacked_melted, aes(fill=Time, y=value, x=variable)) + 
+ggplot(stacked_melted, aes(fill=Time, y=value, x=reorder(variable, value), group = value)) + 
   geom_bar(position="dodge", stat="identity") +
   theme(plot.background = element_rect(color = "white", fill = "white"),
         panel.background = element_rect(color = "white", fill = "white"),
@@ -291,4 +291,91 @@ ggplot(stacked_melted, aes(fill=Time, y=value, x=variable)) +
         legend.direction = "vertical") +
   scale_fill_viridis_d(direction = 1, option = "C") +
   labs(title = "Comparativo de Indicadores\nG-5 do Brasileiro Série A 2022")
+
+# Plotagem do gráfico - COLUNAS EMPILHADAS
+
+ggplot(stacked_melted, aes(fill=Time, y=value, x=reorder(variable, value), group = value)) + 
+  geom_bar(position="stack", stat="identity") +
+  theme(plot.background = element_rect(color = "white", fill = "white"),
+        panel.background = element_rect(color = "white", fill = "white"),
+        panel.border = element_rect(color = "grey94", ggplot2::alpha(0.1)),
+        panel.grid.major.x = element_line(color = "grey94", ggplot2::alpha(0.1)),
+        panel.grid.major.y = element_line(color = "grey94", ggplot2::alpha(0.1)),
+        axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        axis.ticks=element_blank(),
+        axis.text.y = element_blank(),
+        axis.text.x = element_text(size = 15),
+        legend.title = element_blank(),
+        legend.position = "right",
+        legend.text = element_text(size = 10),
+        legend.direction = "vertical") +
+  scale_fill_viridis_d(direction = 1, option = "C") +
+  labs(title = "Comparativo de Indicadores\nG-5 do Brasileiro Série A 2022")
+
+# Plotagem do gráfico - COLUNAS AGRUPADAS COM COORD_POLAR
+
+ggplot(stacked_melted, aes(fill=Time, y=value, x=reorder(variable, value), group = value)) + 
+  geom_bar(position="dodge", stat="identity") +
+  theme(plot.background = element_rect(color = "white", fill = "white"),
+        panel.background = element_rect(color = "white", fill = "white"),
+        panel.border = element_blank(),
+        panel.grid.major.x = element_line(color = "grey94", ggplot2::alpha(0.1)),
+        panel.grid.major.y = element_line(color = "grey94", ggplot2::alpha(0.1)),
+        axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        axis.ticks=element_blank(),
+        axis.text.y = element_blank(),
+        axis.text.x = element_text(size = 15),
+        legend.title = element_blank(),
+        legend.position = "right",
+        legend.text = element_text(size = 10),
+        legend.direction = "vertical") +
+  scale_fill_viridis_d(direction = 1, option = "C") +
+  labs(title = "Comparativo de Indicadores\nG-5 do Brasileiro Série A 2022") + 
+  coord_polar()
+
+# Plotagem do gráfico - COLUNAS EMPILHADAS COM COORD_POLAR
+
+ggplot(stacked_melted, aes(fill=Time, y=value, x=reorder(variable, value), group = value)) + 
+  geom_bar(position="stack", stat="identity") +
+  theme(plot.background = element_rect(color = "white", fill = "white"),
+        panel.background = element_rect(color = "white", fill = "white"),
+        panel.border = element_blank(),
+        panel.grid.major.x = element_line(color = "grey94", ggplot2::alpha(0.1)),
+        panel.grid.major.y = element_line(color = "grey94", ggplot2::alpha(0.1)),
+        axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        axis.ticks=element_blank(),
+        axis.text.y = element_blank(),
+        axis.text.x = element_text(size = 15),
+        legend.title = element_blank(),
+        legend.position = "right",
+        legend.text = element_text(size = 10),
+        legend.direction = "vertical") +
+  scale_fill_viridis_d(direction = 1, option = "C") +
+  labs(title = "Comparativo de Indicadores\nG-5 do Brasileiro Série A 2022") + 
+  coord_polar()
+
+# Plotagem do gráfico - COLUNAS EMPILHADAS COM COORD_POLAR E EIXOS INVERTIDOS
+
+ggplot(stacked_melted, aes(fill=variable, y=value, x=reorder(Time, value), group = Time)) + 
+  geom_bar(position="stack", stat="identity") +
+  theme(plot.background = element_rect(color = "white", fill = "white"),
+        panel.background = element_rect(color = "white", fill = "white"),
+        panel.border = element_blank(),
+        panel.grid.major.x = element_line(color = "grey94", ggplot2::alpha(0.1)),
+        panel.grid.major.y = element_line(color = "grey94", ggplot2::alpha(0.1)),
+        axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        axis.ticks=element_blank(),
+        axis.text.y = element_blank(),
+        axis.text.x = element_text(size = 15),
+        legend.title = element_blank(),
+        legend.position = "right",
+        legend.text = element_text(size = 10),
+        legend.direction = "vertical") +
+  scale_fill_viridis_d(direction = 1, option = "C") +
+  labs(title = "Comparativo de Indicadores\nG-5 do Brasileiro Série A 2022") + 
+  coord_polar()
 
